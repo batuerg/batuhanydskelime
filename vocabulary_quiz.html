@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Quiz</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            border: 1px solid #ccc; /* Add a border for better visibility */
+        }
+        button.correct {
+            background-color: green;
+            color: white;
+        }
+        button.incorrect {
+            background-color: red;
+            color: white;
+        }
+        .feedback {
+            font-weight: bold;
+        }
+        #header {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            font-size: small;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">Batuhan Ergüven</div>
+    <h1>Vocabulary Quiz</h1>
+    <div id="quiz-container">
+        <div id="question" class="question"></div>
+        <div id="options" class="options">
+            <button onclick="checkAnswer(this)">Option 1</button>
+            <button onclick="checkAnswer(this)">Option 2</button>
+            <button onclick="checkAnswer(this)">Option 3</button>
+            <button onclick="checkAnswer(this)">Option 4</button>
+        </div>
+        <div id="feedback" class="feedback"></div>
+        <button id="next-button" onclick="nextQuestion()">Next Question</button>
+    </div>
+
+    <script>
+        const questions = [
+             {
+                question: "The company aims to ______ its market share through aggressive advertising.",
+                options: ["sustainably", "promote", "access", "thoroughly"],
+                correctAnswer: "promote"
+            },
+            {
+                question: "It's important to act ______ and address problems immediately.",
+                options: ["sustainably", "promote", "access", "thoroughly"],
+                correctAnswer: "thoroughly"
+            },
+            {
+                question: "The project's success depends on our ability to ______ new resources.",
+                options: ["access", "promote", "utterly", "thoroughly"],
+                correctAnswer: "access"
+            },
+            {
+                question: "This product is designed to be environmentally ______ .",
+                options: ["sustainably", "promote", "access", "thoroughly"],
+                correctAnswer: "sustainably"
+            },
+              {
+                question: "The negotiations reached a ______ , with neither side willing to compromise.",
+                options: ["sustainable", "promote", "deadlock", "thoroughly"],
+                correctAnswer: "deadlock"
+            },
+            {
+                question: "The company faced ______ losses due to the economic crisis.",
+                options: ["massive", "promote", "access", "thoroughly"],
+                correctAnswer: "massive"
+            },
+            {
+                question: "The two countries are ______ in size.",
+                options: ["relatively", "promote", "access", "thoroughly"],
+                correctAnswer: "relatively"
+            },
+            {
+                question: "You can ______ on public transportation to get around the city.",
+                options: ["depend", "promote", "access", "thoroughly"],
+                correctAnswer: "depend"
+            },
+              {
+                question: "He decided to ______ a new hobby to relax after work.",
+                options: ["take up", "promote", "access", "thoroughly"],
+                correctAnswer: "take up"
+            },
+            {
+                question: "The study revealed a strong ______ between smoking and lung cancer.",
+                options: ["association", "promote", "access", "thoroughly"],
+                correctAnswer: "association"
+            },
+            {
+                question: "The witness provided ______ evidence to support the defendant's alibi.",
+                options: ["inculpatory", "promote", "access", "thoroughly"],
+                correctAnswer: "inculpatory"
+            },
+            {
+                question: "The plan was ______ to ensure every detail was correct.",
+                options: ["exactly", "promote", "access", "thoroughly"],
+                correctAnswer: "exactly"
+            },
+            {
+                question: "It is important to handle the fragile items ______ .",
+                options: ["carefully", "promote", "access", "thoroughly"],
+                correctAnswer: "carefully"
+            },
+            {
+                question: "The suspect tried to ______ with the police officer.",
+                options: ["cope", "promote", "access", "thoroughly"],
+                correctAnswer: "cope"
+            },
+              {
+                question: "After a few tries, she managed to ______ her goal.",
+                options: ["achieve", "promote", "access", "thoroughly"],
+                correctAnswer: "achieve"
+            },
+            {
+                question: "The team had to ______ many challenges to win the championship.",
+                options: ["maintain", "promote", "access", "thoroughly"],
+                correctAnswer: "maintain"
+            },
+            {
+                question: "The speaker's words were ______ and inspiring.",
+                options: ["valuable", "promote", "access", "thoroughly"],
+                correctAnswer: "valuable"
+            },
+            {
+                question: "He expressed his gratitude ______ after receiving the award.",
+                options: ["impressively", "promote", "access", "thoroughly"],
+                correctAnswer: "impressively"
+            },
+             {
+                question: "The committee had to ______ several times to agree on a solution.",
+                options: ["call for", "promote", "access", "thoroughly"],
+                correctAnswer: "call for"
+            },
+            {
+                question: "The CEO made the ______ decision to invest in renewable energy.",
+                options: ["main", "promote", "access", "thoroughly"],
+                correctAnswer: "main"
+            },
+            {
+                question: "The manager had to ______ with a difficult situation.",
+                options: ["deal with", "promote", "access", "thoroughly"],
+                correctAnswer: "deal with"
+            },
+              {
+                question: "The professor went to an ______ length to explain the subject",
+                options: ["expenditure", "promote", "access", "thoroughly"],
+                correctAnswer: "expenditure"
+            },
+            {
+                question: "The new policy has had a ______ impact on the company.",
+                options: ["observable", "promote", "access", "thoroughly"],
+                correctAnswer: "observable"
+            },
+            {
+                question: "The team won the game ______.",
+                options: ["significantly", "promote", "access", "thoroughly"],
+                correctAnswer: "significantly"
+            },
+            {
+                question: "We had to ______ the situation to prevent further damage.",
+                options: ["confront", "promote", "access", "thoroughly"],
+                correctAnswer: "confront"
+            },
+            {
+                question: "He decided to ______ the advice of his mentor.",
+                options: ["rely on", "promote", "access", "thoroughly"],
+                correctAnswer: "rely on"
+            },
+            {
+                question: "The company aims to ______ the best practices in its operations.",
+                options: ["incorporate", "promote", "access", "thoroughly"],
+                correctAnswer: "incorporate"
+            },
+            {
+                question: "The government plans to ______ its resources to improve public services.",
+                options: ["utilize", "promote", "access", "thoroughly"],
+                correctAnswer: "utilize"
+            },
+            {
+                question: "The idea was ______ for a successful business venture.",
+                options: ["prospect", "promote", "access", "thoroughly"],
+                correctAnswer: "prospect"
+            },
+            {
+                question: "The city is known for its ______ architecture and rich history.",
+                options: ["vast", "promote", "access", "thoroughly"],
+                correctAnswer: "vast"
+            },
+            {
+                question: "The company's profits increased ______ this year.",
+                options: ["considerably", "promote", "access", "thoroughly"],
+                correctAnswer: "considerably"
+            },
+            {
+                question: "She felt ______ about the upcoming job interview.",
+                options: ["sure", "promote", "access", "thoroughly"],
+                correctAnswer: "sure"
+            },
+            {
+                question: "The scientists managed to ______ important research about the virus.",
+                options: ["carry out", "promote", "access", "thoroughly"],
+                correctAnswer: "carry out"
+            },
+              {
+                question: "The idea came to him as he ______ on the beach.",
+                options: ["came up with", "promote", "access", "thoroughly"],
+                correctAnswer: "came up with"
+            },
+            {
+                question: "The detective decided to ______ the evidence to find the truth.",
+                options: ["look for", "promote", "access", "thoroughly"],
+                correctAnswer: "look for"
+            },
+              {
+                question: "To ______ a goal, one needs determination and hard work.",
+                options: ["attain", "interfere with", "ambiguous", "deterioration"],
+                correctAnswer: "attain"
+            },
+             {
+                question: "After the accident, the car was in a state of ______ .",
+                options: ["deterioration", "interfere with", "ambiguous", "attain"],
+                correctAnswer: "deterioration"
+            },
+             {
+                question: "His instructions were quite ______ , leaving room for multiple interpretations.",
+                options: ["ambiguous", "interfere with", "attain", "deterioration"],
+                correctAnswer: "ambiguous"
+            },
+             {
+                question: "Pollution can ______ the natural environment.",
+                options: ["deteriorate", "interfere with", "attain", "ambiguous"],
+                correctAnswer: "deteriorate"
+            },
+            {
+                question: "Noise from the construction can ______ the sleep.",
+                options: ["interfere with", "attain", "ambiguous", "deterioration"],
+                correctAnswer: "interfere with"
+            },
+            {
+                question: "Companies tend to ______ and become bigger.",
+                options: ["proliferation", "interfere with", "attain", "ambiguous"],
+                correctAnswer: "proliferation"
+            },
+            {
+                question: "The meeting was ______ due to the emergency.",
+                options: ["adjourned", "interfere with", "attain", "ambiguous"],
+                correctAnswer: "adjourned"
+            },
+            {
+                question: "The manager decided to ______ responsibility to the team.",
+                options: ["delegate", "interfere with", "attain", "ambiguous"],
+                correctAnswer: "delegate"
+            },
+            {
+                question: "The company decided to ______ with the competitor.",
+                options: ["associate", "interfere with", "attain", "ambiguous"],
+                correctAnswer: "associate"
+            },
+              {
+                question: "The politician tried to ______ the situation.",
+                options: ["explicate", "interfere with", "attain", "ambiguous"],
+                correctAnswer: "explicate"
+            },
+            {
+                question: "The lawyer has to be ______ .",
+                options: ["accurate", "interfere with", "attain", "ambiguous"],
+                correctAnswer: "accurate"
+            },
+            {
+                question: "The soldiers were to ______ their mission.",
+                options: ["accomplish", "interfere with", "attain", "ambiguous"],
+                correctAnswer: "accomplish"
+            },
+            {
+                question: "This incident was a ______ .",
+                options: ["occurrence", "interfere with", "attain", "ambiguous"],
+                correctAnswer: "occurrence"
+            },
+            {
+                question: "The doctor had to ______ her condition.",
+                options: ["gauge", "interfere with", "attain", "ambiguous"],
+                correctAnswer: "gauge"
+            },
+            {
+                question: "The ______ of the report was well received.",
+                options: ["accuracy", "interfere with", "attain", "ambiguous"],
+                correctAnswer: "accuracy"
+            },
+            {
+                question: "It was an ______ event.",
+                options: ["unprecedented", "interfere with", "attain", "ambiguous"],
+                correctAnswer: "unprecedented"
+            },
+            {
+                question: "The fire fighters tried to ______ the situation.",
+                options: ["bring out", "interfere with", "attain", "ambiguous"],
+                correctAnswer: "bring out"
+            },
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        const questionElement = document.getElementById("question");
+        const optionsElement = document.getElementById("options");
+        const feedbackElement = document.getElementById("feedback");
+        const nextButton = document.getElementById("next-button");
+
+        // Function to shuffle the array (Fisher-Yates shuffle)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Shuffle the questions when the script loads
+        shuffleArray(questions);
+
+        function loadQuestion() {
+            const questionData = questions[currentQuestion];
+            questionElement.innerText = questionData.question;
+
+            const options = questionData.options;
+            for (let i = 0; i < options.length; i++) {
+                optionsElement.children[i].innerText = options[i];
+                optionsElement.children[i].className = ""; // Remove previous class
+            }
+        }
+
+        function checkAnswer(selectedOption) {
+            const questionData = questions[currentQuestion];
+            const isCorrect = selectedOption.innerText === questionData.correctAnswer;
+
+            if (isCorrect) {
+                feedbackElement.innerText = "Correct!";
+                score++;
+                selectedOption.classList.add("correct");
+            } else {
+                feedbackElement.innerText = "Incorrect. The correct answer was: " + questionData.correctAnswer;
+                selectedOption.classList.add("incorrect");
+
+                // Highlight the correct answer
+                for (let i = 0; i < optionsElement.children.length; i++) {
+                    if (optionsElement.children[i].innerText === questionData.correctAnswer) {
+                        optionsElement.children[i].classList.add("correct");
+                        break;
+                    }
+                }
+            }
+            nextButton.style.display = "block";
+
+             // Disable all options after answering
+             for (let i = 0; i < optionsElement.children.length; i++) {
+                optionsElement.children[i].disabled = true;
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            feedbackElement.innerText = "";
+            nextButton.style.display = "none";
+
+            // Enable all options for the next question
+            for (let i = 0; i < optionsElement.children.length; i++) {
+                optionsElement.children[i].disabled = false;
+                optionsElement.children[i].className = ""; // Remove previous class
+            }
+
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                questionElement.innerText = "Quiz complete! Your score: " + score + " / " + questions.length;
+                optionsElement.style.display = "none";
+                nextButton.style.display = "none";
+            }
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
