@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocabulary Quiz</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            text-align: center;
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            margin: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            border: 1px solid #ccc; /* Add a border for better visibility */
+        }
+        button.correct {
+            background-color: green;
+            color: white;
+        }
+        button.incorrect {
+            background-color: red;
+            color: white;
+        }
+        .feedback {
+            font-weight: bold;
+        }
+        #header {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            font-size: small;
+            color: #888;
+        }
+        #options {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div id="header">Batuhan Ergüven</div>
+    <h1>Vocabulary Quiz</h1>
+    <div id="quiz-container">
+        <div id="question" class="question"></div>
+        <div id="options" class="options">
+            <button onclick="checkAnswer(this)">Option 1</button>
+            <button onclick="checkAnswer(this)">Option 2</button>
+            <button onclick="checkAnswer(this)">Option 3</button>
+            <button onclick="checkAnswer(this)">Option 4</button>
+        </div>
+        <button id="next-button" onclick="nextQuestion()">Next Question</button>
+        <div id="feedback" class="feedback"></div>
+    </div>
+
+    <script>
+        const questions = [
+            {
+                question: "The company aims to ______ its market share through aggressive advertising.",
+                options: ["sustainably", "access", "utterly", "promote"],
+                correctAnswer: "promote"
+            },
+            {
+                question: "It's important to act ______ and address problems immediately.",
+                options: ["hastily", "carefully", "thoroughly", "angrily"],
+                correctAnswer: "thoroughly"
+            },
+            {
+                question: "The project's success depends on our ability to ______ new resources.",
+                options: ["waste", "consume", "access", "destroy"],
+                correctAnswer: "access"
+            },
+            {
+                question: "This product is designed to be environmentally ______ .",
+                options: ["expensive", "harmful", "sustainable", "disposable"],
+                correctAnswer: "sustainable"
+            },
+              {
+                question: "The negotiations reached a ______ , with neither side willing to compromise.",
+                options: ["resolution", "agreement", "deadlock", "harmony"],
+                correctAnswer: "deadlock"
+            },
+            {
+                question: "The company faced ______ losses due to the economic crisis.",
+                options: ["minor", "small", "massive", "negligible"],
+                correctAnswer: "massive"
+            },
+            {
+                question: "The two countries are ______ in size.",
+                options: ["identical", "relatively", "exactly", "uniformly"],
+                correctAnswer: "relatively"
+            },
+            {
+                question: "You can ______ on public transportation to get around the city.",
+                options: ["ignore", "drive", "depend", "reject"],
+                correctAnswer: "depend"
+            },
+              {
+                question: "He decided to ______ a new hobby to relax after work.",
+                options: ["abandon", "pursue", "take up", "delay"],
+                correctAnswer: "take up"
+            },
+            {
+                question: "The study revealed a strong ______ between smoking and lung cancer.",
+                options: ["distinction", "difference", "association", "separation"],
+                correctAnswer: "association"
+            },
+            {
+                question: "The witness provided ______ evidence to support the defendant's alibi.",
+                options: ["confusing", "vague", "inculpatory", "uncertain"],
+                correctAnswer: "inculpatory"
+            },
+            {
+                question: "The plan was ______ to ensure every detail was correct.",
+                options: ["haphazard", "roughly", "exactly", "approximately"],
+                correctAnswer: "exactly"
+            },
+            {
+                question: "It is important to handle the fragile items ______ .",
+                options: ["carelessly", "roughly", "carefully", "recklessly"],
+                correctAnswer: "carefully"
+            },
+            {
+                question: "The suspect tried to ______ with the police officer.",
+                options: ["quarrel", "avoid", "cope", "flee"],
+                correctAnswer: "cope"
+            },
+              {
+                question: "After a few tries, she managed to ______ her goal.",
+                options: ["postpone", "abandon", "achieve", "forget"],
+                correctAnswer: "achieve"
+            },
+            {
+                question: "The team had to ______ many challenges to win the championship.",
+                options: ["avoid", "overlook", "maintain", "neglect"],
+                correctAnswer: "maintain"
+            },
+            {
+                question: "The speaker's words were ______ and inspiring.",
+                options: ["trivial", "mundane", "valuable", "ordinary"],
+                correctAnswer: "valuable"
+            },
+            {
+                question: "He expressed his gratitude ______ after receiving the award.",
+                options: ["faintly", "slightly", "impressively", "weakly"],
+                correctAnswer: "impressively"
+            },
+             {
+                question: "The committee had to ______ several times to agree on a solution.",
+                options: ["agree on", "call for", "decide", "endure"],
+                correctAnswer: "call for"
+            },
+            {
+                question: "The CEO made the ______ decision to invest in renewable energy.",
+                options: ["insignificant", "minor", "main", "secondary"],
+                correctAnswer: "main"
+            },
+            {
+                question: "The manager had to ______ with a difficult situation.",
+                options: ["ignore", "evade", "deal with", "neglect"],
+                correctAnswer: "deal with"
+            },
+              {
+                question: "The professor went to an ______ length to explain the subject",
+                options: ["average", "moderate", "expenditure", "normal"],
+                correctAnswer: "expenditure"
+            },
+            {
+                question: "The new policy has had a ______ impact on the company.",
+                options: ["hidden", "latent", "observable", "obscure"],
+                correctAnswer: "observable"
+            },
+            {
+                question: "The team won the game ______.",
+                options: ["barely", "insignificantly", "significantly", "slightly"],
+                correctAnswer: "significantly"
+            },
+            {
+                question: "We had to ______ the situation to prevent further damage.",
+                options: ["ignore", "confront", "neglect", "avoid"],
+                correctAnswer: "confront"
+            },
+            {
+                question: "He decided to ______ the advice of his mentor.",
+                options: ["disregard", "reject", "rely on", "dismiss"],
+                correctAnswer: "rely on"
+            },
+            {
+                question: "The company aims to ______ the best practices in its operations.",
+                options: ["exclude", "ignore", "incorporate", "omit"],
+                correctAnswer: "incorporate"
+            },
+            {
+                question: "The government plans to ______ its resources to improve public services.",
+                options: ["squander", "waste", "utilize", "deplete"],
+                correctAnswer: "utilize"
+            },
+            {
+                question: "The idea was ______ for a successful business venture.",
+                options: ["unlikely", "impossible", "prospect", "improbable"],
+                correctAnswer: "prospect"
+            },
+            {
+                question: "The city is known for its ______ architecture and rich history.",
+                options: ["limited", "vast", "restricted", "confined"],
+                correctAnswer: "vast"
+            },
+            {
+                question: "The company's profits increased ______ this year.",
+                options: ["minimally", "negligibly", "considerably", "slightly"],
+                correctAnswer: "considerably"
+            },
+            {
+                question: "She felt ______ about the upcoming job interview.",
+                options: ["unsure", "sure", "doubtful", "uncertain"],
+                correctAnswer: "sure"
+            },
+            {
+                question: "The scientists managed to ______ important research about the virus.",
+                options: ["halt", "suspend", "carry out", "cease"],
+                correctAnswer: "carry out"
+            },
+              {
+                question: "The idea came to him as he ______ on the beach.",
+                options: ["refused with", "refrained from", "came up with", "desisted from"],
+                correctAnswer: "came up with"
+            },
+            {
+                question: "The detective decided to ______ the evidence to find the truth.",
+                options: ["disregard for", "despise", "look for", "disclaim"],
+                correctAnswer: "look for"
+            },
+              {
+                question: "To ______ a goal, one needs determination and hard work.",
+                options: ["relinquish", "attain", "cede", "waive"],
+                correctAnswer: "attain"
+            },
+             {
+                question: "After the accident, the car was in a state of ______ .",
+                options: ["repair", "renovate", "deterioration", "recondition"],
+                correctAnswer: "deterioration"
+            },
+             {
+                question: "His instructions were quite ______ , leaving room for multiple interpretations.",
+                options: ["obvious", "explicit", "ambiguous", "lucid"],
+                correctAnswer: "ambiguous"
+            },
+             {
+                question: "Pollution can ______ the natural environment.",
+                options: ["improve", "deteriorate", "ameliorate", "upgrade"],
+                correctAnswer: "deteriorate"
+            },
+            {
+                question: "Noise from the construction can ______ the sleep.",
+                options: ["aid", "help", "interfere with", "facilitate"],
+                correctAnswer: "interfere with"
+            },
+            {
+                question: "Companies tend to ______ and become bigger.",
+                options: ["decrease", "shrink", "proliferation", "diminish"],
+                correctAnswer: "proliferation"
+            },
+            {
+                question: "The meeting was ______ due to the emergency.",
+                options: ["advanced", "convened", "adjourned", "assembled"],
+                correctAnswer: "adjourned"
+            },
+            {
+                question: "The manager decided to ______ responsibility to the team.",
+                options: ["retain", "delegate", "keep", "hold"],
+                correctAnswer: "delegate"
+            },
+            {
+                question: "The company decided to ______ with the competitor.",
+                options: ["split", "associate", "distance", "diverge"],
+                correctAnswer: "associate"
+            },
+              {
+                question: "The politician tried to ______ the situation.",
+                options: ["simplify", "explicate", "complicate", "muddle"],
+                correctAnswer: "explicate"
+            },
+            {
+                question: "The lawyer has to be ______ .",
+                options: ["imprecise", "approximate", "accurate", "vague"],
+                correctAnswer: "accurate"
+            },
+            {
+                question: "The soldiers were to ______ their mission.",
+                options: ["give up", "abort", "accomplish", "relinquish"],
+                correctAnswer: "accomplish"
+            },
+            {
+                question: "This incident was a ______ .",
+                options: ["normality", "rarity", "occurrence", "unusual"],
+                correctAnswer: "occurrence"
+            },
+            {
+                question: "The doctor had to ______ her condition.",
+                options: ["estimate", "misjudge", "gauge", "overestimate"],
+                correctAnswer: "gauge"
+            },
+            {
+                question: "The ______ of the report was well received.",
+                options: ["inaccuracy", "untruth", "accuracy", "falsity"],
+                correctAnswer: "accuracy"
+            },
+            {
+                question: "It was an ______ event.",
+                options: ["typical", "common", "unprecedented", "usual"],
+                correctAnswer: "unprecedented"
+            },
+            {
+                question: "The fire fighters tried to ______ the situation.",
+                options: ["bring out", "retain", "keep", "hold"],
+                correctAnswer: "bring out"
+            },
+        ];
+
+        let currentQuestion = 0;
+        let score = 0;
+
+        const questionElement = document.getElementById("question");
+        const optionsElement = document.getElementById("options");
+        const feedbackElement = document.getElementById("feedback");
+        const nextButton = document.getElementById("next-button");
+
+        // Function to shuffle the array (Fisher-Yates shuffle)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        // Shuffle the questions when the script loads
+        shuffleArray(questions);
+
+        function loadQuestion() {
+            const questionData = questions[currentQuestion];
+            questionElement.innerText = questionData.question;
+
+            // Shuffle the options for each question
+            const options = [...questionData.options]; // Create a copy to avoid modifying the original
+            shuffleArray(options);
+
+            // Display the shuffled options
+            for (let i = 0; i < options.length; i++) {
+                optionsElement.children[i].innerText = options[i];
+                optionsElement.children[i].className = ""; // Remove previous class
+                optionsElement.children[i].disabled = false; // Enable all options
+            }
+
+            nextButton.style.display = "none"; // Hide the next button initially
+        }
+
+        function checkAnswer(selectedOption) {
+            const questionData = questions[currentQuestion];
+            const isCorrect = selectedOption.innerText === questionData.correctAnswer;
+
+            if (isCorrect) {
+                feedbackElement.innerText = "Correct!";
+                score++;
+                selectedOption.classList.add("correct");
+            } else {
+                feedbackElement.innerText = "Incorrect. The correct answer was: " + questionData.correctAnswer;
+                selectedOption.classList.add("incorrect");
+
+                // Highlight the correct answer
+                for (let i = 0; i < optionsElement.children.length; i++) {
+                    if (optionsElement.children[i].innerText === questionData.correctAnswer) {
+                        optionsElement.children[i].classList.add("correct");
+                        break;
+                    }
+                }
+            }
+
+            nextButton.style.display = "block";
+            // Disable all options after answering
+            for (let i = 0; i < optionsElement.children.length; i++) {
+                optionsElement.children[i].disabled = true;
+            }
+        }
+
+        function nextQuestion() {
+            currentQuestion++;
+            feedbackElement.innerText = "";
+
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                questionElement.innerText = "Quiz complete! Your score: " + score + " / " + questions.length;
+                optionsElement.style.display = "none";
+                nextButton.style.display = "none";
+            }
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>
